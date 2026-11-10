@@ -1,0 +1,131 @@
+---
+import { Image, getImage } from 'astro:assets';
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getProjects, type Project } from '../../lib/projects';
+
+export async function getStaticPaths() {
+  const projects = await getProjects();
+  return projects.map((project, i) => ({
+    params: { slug: project.id },
+    props: {
+      project,
+      prev: projects[i - 1] ?? projects[projects.length - 1],
+      next: projects[i + 1] ?? projects[0],
+      total: projects.length,
+    },
+  }));
+}
+
+interface Props {
+  project: Project;
+  prev: Project;
+  next: Project;
+  total: number;
+}
+
+const { project, prev, next, total } = Astro.props;
+const d = project.data;
+const { Content } = await render(project);
+const og = await getImage({ src: d.cover, width: 1200, height: 630, format: 'jpg' });
+const facts = [{ label: 'Location', value: d.location }, ...(d.year ? [{ label: 'Year', value: String(d.year) }] : []), ...d.facts, ...(d.services ? [{ label: 'Services', value: d.services }] : [])];
+---
+<BaseLayout title={d.title} description={d.summary} image={og.src}>
+  <section class="container head">
+    <a href="/projects/" class="back">← All projects</a>
+    <span class="eyebrow cats">{d.categories.join(' · ')}</span>
+    <h1 class="display">{d.title}</h1>
+    <p class="lede">{d.summary}</p>
+  </section>
+
+  <section class="container">
+    <figure class="cover">
+      <Image
+        src={d.cover}
+        alt={d.coverAlt}
+        widths={[800, 1280, 1920, 2560]}
+        sizes="(max-width: 1440px) 100vw, 1360px"
+        loading="eager"
+        fetchpriority="high"
+      />
+    </figure>
+  </section>
+
+  <section class="container" aria-label="Project facts">
+    <dl class="facts">
+      {facts.map((f) => (
+        <div>
+          <dt>{f.label}</dt>
+          <dd>{f.value}</dd>
+        </div>
+      ))}
+    </dl>
+  </section>
+
+  <section class="container body">
+    <div class="prose"><Content /></div>
+  </section>
+
+  {d.gallery.length > 0 && (
+    <section class="container gallery" aria-label="Gallery">
+      {d.gallery.map((g) => (
+        <figure>
+          <div class="frame">
+            <Image src={g.image} alt={g.alt} widths={[640, 960, 1400]} sizes="(max-width: 900px) 100vw, 50vw" />
+          </div>
+          {g.caption && <figcaption>{g.caption}</figcaption>}
+        </figure>
+      ))}
+    </section>
+  )}
+
+  {total > 1 && (
+    <nav class="pager" aria-label="More projects">
+      <div class="container pager-inner">
+        <a href={`/projects/${prev.id}/`}>
+          <span class="eyebrow">← Previous</span>
+          <span class="t">{prev.data.title}</span>
+        </a>
+        <a href={`/projects/${next.id}/`} class="next">
+          <span class="eyebrow">Next →</span>
+          <span class="t">{next.data.title}</span>
+        </a>
+      </div>
+    </nav>
+  )}
+</BaseLayout>
+
+<style>
+  .head { padding-block: 3rem 2.5rem; display: flex; flex-direction: column; gap: 1.25rem; }
+  .back { align-self: flex-start; padding: 0.5rem 0; font-size: 0.8125rem; font-weight: 500; letter-spacing: 0.08em; color: var(--muted); }
+  .cats { color: var(--accent); }
+  .head .display { max-width: 60rem; }
+  .head .lede { margin: 0; max-width: 44rem; color: #4a4744; }
+
+  .cover { margin: 0; overflow: hidden; aspect-ratio: 16 / 9; background: var(--surface); }
+  .cover :global(img) { width: 100%; height: 100%; object-fit: cover; }
+
+  .facts {
+    margin: 2.5rem 0 0; padding-block: 2rem;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 170px), 1fr)); gap: 1.75rem 2rem;
+    border-top: 1px solid var(--ink); border-bottom: 1px solid var(--line);
+  }
+  .facts div { display: flex; flex-direction: column; gap: 0.375rem; }
+  .facts dt { font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase; color: #6a6560; }
+  .facts dd { margin: 0; font-size: 1.0625rem; font-weight: 500; }
+
+  .body { padding-block: 5rem; }
+
+  .gallery { padding-bottom: 5rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 2rem; }
+  .gallery figure { margin: 0; display: flex; flex-direction: column; gap: 0.75rem; }
+  .gallery .frame { overflow: hidden; aspect-ratio: 16 / 10; background: var(--surface); }
+  .gallery .frame :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .gallery figcaption { font-size: 0.875rem; color: var(--muted); }
+
+  .pager { border-top: 1px solid var(--line); }
+  .pager-inner { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; }
+  .pager a { display: flex; flex-direction: column; gap: 0.375rem; padding-block: 2.5rem; }
+  .pager .next { text-align: right; margin-left: auto; }
+  .pager .eyebrow { color: #6a6560; font-weight: 500; }
+  .pager .t { font-family: var(--font-display); font-size: 1.375rem; font-weight: 500; }
+</style>

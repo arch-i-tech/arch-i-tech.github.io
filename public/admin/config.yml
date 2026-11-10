@@ -1,0 +1,104 @@
+# Sveltia CMS configuration — https://github.com/sveltia/sveltia-cms
+# Architects edit content at https://<site>/admin/ ; every save is a commit to `main`,
+# which triggers the GitHub Actions build and redeploys the site.
+
+backend:
+  name: github
+  repo: arch-i-tech/arch-i-tech.github.io
+  branch: main
+  # GitHub OAuth needs a tiny auth service. Deploy https://github.com/sveltia/sveltia-cms-auth
+  # (free Cloudflare Worker) and put its URL here. Until then, use "Sign in with Token"
+  # on the login screen with a GitHub fine-grained personal access token.
+  # base_url: https://sveltia-cms-auth.<your-account>.workers.dev
+  commit_messages:
+    create: 'Add {{collection}}: {{slug}}'
+    update: 'Update {{collection}}: {{slug}}'
+    delete: 'Delete {{collection}}: {{slug}}'
+    uploadMedia: 'Upload {{path}}'
+    deleteMedia: 'Delete {{path}}'
+
+site_url: https://arch-i-tech.github.io
+display_url: https://arch-i-tech.github.io
+
+# Fallback location for uploads that don't belong to a specific entry.
+media_folder: src/assets/uploads
+public_folder: /src/assets/uploads
+
+# Resize and convert photos in the browser before they are committed,
+# so huge renders don't bloat the repository.
+media_libraries:
+  default:
+    config:
+      transformations:
+        raster_image:
+          format: webp
+          quality: 85
+          width: 2560
+          height: 2560
+
+collections:
+  - name: projects
+    label: Projects
+    label_singular: Project
+    description: Portfolio projects. Each project gets its own folder with its images.
+    folder: src/content/projects
+    path: '{{slug}}/index'
+    # Store images next to the project's index.md (entry-relative media).
+    media_folder: ''
+    public_folder: ''
+    create: true
+    slug: '{{title}}'
+    summary: '{{title}} — {{location}}'
+    sortable_fields: [title, order]
+    fields:
+      - { name: title, label: Title, widget: string }
+      - { name: summary, label: Short summary, widget: text, hint: 'One or two sentences shown under the title and in link previews.' }
+      - { name: location, label: Location, widget: string, hint: 'e.g. Loíza, Puerto Rico' }
+      - { name: year, label: Year, widget: number, value_type: int, required: false }
+      - name: categories
+        label: Categories
+        widget: select
+        multiple: true
+        min: 1
+        options: [Master Planning, Architecture, Landscape, Interiors, Hospitality, Visualization]
+      - { name: services, label: Our services, widget: string, required: false, hint: 'e.g. Master plan, architecture, landscape' }
+      - { name: cover, label: Cover image, widget: image }
+      - { name: coverAlt, label: Cover image description, widget: string, hint: 'Describe the image for screen readers and search engines.' }
+      - name: facts
+        label: Key facts
+        widget: list
+        required: false
+        summary: '{{label}}: {{value}}'
+        fields:
+          - { name: label, label: Label, widget: string }
+          - { name: value, label: Value, widget: string }
+      - name: gallery
+        label: Gallery
+        widget: list
+        required: false
+        summary: '{{alt}}'
+        fields:
+          - { name: image, label: Image, widget: image }
+          - { name: alt, label: Image description, widget: string }
+          - { name: caption, label: Caption, widget: string, required: false }
+      - { name: featured, label: Show on home page, widget: boolean, default: false }
+      - { name: order, label: Sort order, widget: number, value_type: int, default: 100, hint: 'Lower numbers appear first.' }
+      - { name: draft, label: Draft (hidden from site), widget: boolean, default: false }
+      - { name: body, label: Description, widget: markdown }
+
+  - name: settings
+    label: Site settings
+    files:
+      - name: site
+        label: Contact & company details
+        file: src/data/site.json
+        fields:
+          - { name: name, label: Short name, widget: string }
+          - { name: legalName, label: Legal name, widget: string }
+          - { name: tagline, label: Tagline, widget: string }
+          - { name: description, label: Default page description (SEO), widget: text }
+          - { name: email, label: Email, widget: string, required: false }
+          - { name: phone, label: Phone, widget: string, required: false }
+          - { name: location, label: Studio location, widget: string, required: false }
+          - { name: facebook, label: Facebook URL, widget: string, required: false }
+          - { name: formEndpoint, label: Contact form endpoint (Formspree / Web3Forms URL), widget: string, required: false }

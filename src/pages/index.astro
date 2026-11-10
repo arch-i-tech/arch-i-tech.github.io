@@ -1,0 +1,126 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { getFeaturedProjects } from '../lib/projects';
+
+const featured = await getFeaturedProjects(6);
+const hero = featured[0];
+
+const disciplines = [
+  { title: 'Master Planning', text: 'Resorts, hospitality complexes, residential communities and urban districts.' },
+  { title: 'Architecture', text: 'Homes and villas, hotels, mixed-use, retail, civic and industrial buildings.' },
+  { title: 'Landscape Architecture', text: 'Parks, gardens, estates, pools and recreational landscapes.' },
+  { title: 'Interior Design', text: 'Residences, hotels, restaurants, offices and retail interiors.' },
+  { title: '3D Visualization & VFX', text: 'Photoreal stills, animation, projection mapping and immersive media.' },
+];
+---
+<BaseLayout>
+  {hero && (
+    <section class="container hero">
+      <div class="hero-media">
+        <Image
+          src={hero.data.cover}
+          alt={hero.data.coverAlt}
+          widths={[800, 1280, 1920, 2560]}
+          sizes="(max-width: 1440px) 100vw, 1360px"
+          loading="eager"
+          fetchpriority="high"
+        />
+        <div class="hero-overlay">
+          <h1>Architecture, landscape &amp; master planning — from first sketch to photoreal vision.</h1>
+          <a href={`/projects/${hero.id}/`} class="hero-link">
+            <span class="eyebrow">Featured</span>
+            <span>{hero.data.title}, {hero.data.location} →</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section class="container intro">
+    <p class="lede">
+      An international design studio for architecture, landscape architecture and high-end 3D
+      visualization — working across residential, hospitality, mixed-use and industrial projects
+      worldwide.
+    </p>
+    <div class="intro-side">
+      <p>
+        Our team combines decades of international experience to deliver design-driven solutions,
+        from early concept studies to detailed design and photorealistic visualization.
+      </p>
+      <a href="/about/" class="link-arrow">About the studio →</a>
+    </div>
+  </section>
+
+  <section class="container work" aria-labelledby="work">
+    <div class="section-head">
+      <h2 id="work" class="eyebrow">Selected work</h2>
+      <a href="/projects/" class="link-arrow">All projects →</a>
+    </div>
+    <div class="grid-projects">
+      {featured.map((p) => <ProjectCard project={p} />)}
+    </div>
+  </section>
+
+  <section class="disciplines" aria-labelledby="disciplines">
+    <div class="container">
+      <h2 id="disciplines" class="eyebrow">What we do</h2>
+      <div class="disc-grid">
+        {disciplines.map((d, i) => (
+          <div class="disc">
+            <span class="num">{String(i + 1).padStart(2, '0')}</span>
+            <h3>{d.title}</h3>
+            <p>{d.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="container cta">
+    <h2>Have a project in mind? Let's talk.</h2>
+    <a href="/about/#contact" class="btn">Start a conversation</a>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero-media { position: relative; overflow: hidden; aspect-ratio: 16 / 8.4; min-height: 26rem; background: #2a2826; }
+  .hero-media :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .hero-overlay {
+    position: absolute; inset: auto 0 0 0;
+    padding: 6rem 2.5rem 2.25rem;
+    background: linear-gradient(to top, rgba(10, 10, 10, 0.72), rgba(10, 10, 10, 0));
+    display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 1.5rem;
+  }
+  .hero-overlay h1 {
+    max-width: 46rem; color: #fff; font-weight: 300;
+    font-size: clamp(2rem, 4.2vw, 3.75rem); line-height: 1.06; letter-spacing: -0.02em;
+  }
+  .hero-link { display: flex; flex-direction: column; gap: 0.25rem; padding: 0.75rem 0; color: #fff; font-size: 0.8125rem; font-weight: 500; text-align: right; }
+  .hero-link:hover { color: #fff; text-decoration: underline; }
+  .hero-link .eyebrow { color: #e6e2dc; font-weight: 400; }
+  @media (max-width: 640px) {
+    .hero-overlay { padding: 4rem 1.25rem 1.25rem; }
+    .hero-link { text-align: left; }
+  }
+
+  .intro { padding-block: 7rem 5rem; display: flex; flex-wrap: wrap; gap: 3rem 6rem; }
+  .intro .lede { flex: 1 1 26rem; margin: 0; }
+  .intro-side { flex: 1 1 22rem; display: flex; flex-direction: column; gap: 1.5rem; padding-top: 0.5rem; }
+  .intro-side p { margin: 0; color: #4a4744; line-height: 1.7; }
+  .intro-side .link-arrow { align-self: flex-start; border-bottom: 1px solid var(--ink); }
+
+  .work { padding-bottom: 7rem; }
+
+  .disciplines { background: var(--bg-alt); padding-block: 6rem; }
+  .disciplines h2 { margin-bottom: 3rem; }
+  .disc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 2.5rem 2rem; }
+  .disc { display: flex; flex-direction: column; gap: 0.75rem; padding-top: 1.25rem; border-top: 1px solid var(--ink); }
+  .disc .num { font-size: 0.8125rem; font-weight: 600; color: var(--accent); }
+  .disc h3 { font-size: 1.25rem; font-weight: 500; }
+  .disc p { margin: 0; font-size: 0.9375rem; color: #4a4744; }
+
+  .cta { padding-block: 7rem; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 2rem; }
+  .cta h2 { max-width: 40rem; font-weight: 300; font-size: clamp(2rem, 3.6vw, 3.25rem); line-height: 1.1; letter-spacing: -0.02em; }
+</style>

@@ -1,0 +1,21 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout title="Page not found">
+  <section class="container nf">
+    <span class="eyebrow">404</span>
+    <h1 class="display">This page doesn't exist.</h1>
+    <p>It may have moved when we rebuilt the site.</p>
+    <div class="actions">
+      <a href="/projects/" class="btn">Browse projects</a>
+      <a href="/" class="btn btn--ghost">Home</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .nf { padding-block: 8rem; display: flex; flex-direction: column; gap: 1.25rem; align-items: flex-start; }
+  .nf .eyebrow { color: var(--accent); }
+  .nf p { margin: 0; color: var(--muted); }
+  .actions { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1rem; }
+</style>
