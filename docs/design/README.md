@@ -23,7 +23,7 @@ Live canvas (editable, the source of truth): https://claude.ai/artifact/12xKffHT
 
 - **Purpose:** portfolio only. No contact form, email or phone; visitors reach the studio through Upwork
   (studio agency page and personal profiles), with LinkedIn as secondary. Upwork buttons always come before LinkedIn.
-- **Menu:** Projects · Services · About. "About" carries the accent color.
+- **Menu:** Projects · About. "About" carries the accent color. (A separate "Services" item was dropped on 2026-11-11: it only jumped to the Services section of the About page.)
 - **Header:** option A — the logo at 64px tall (`width: 19.5rem; max-width: 100%`), menu on the right.
 - **Footer (all pages):** dark band with the ARCH-I-TECH wordmark and copyright only.
 - **Missing links are left out**, not shown as placeholders.
