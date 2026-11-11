@@ -36,7 +36,7 @@ Most of the pages, layout and styles already exist. This phase makes them build,
 - [x] ~~Contact details~~ Portfolio only: no email/phone/form; studio Upwork + LinkedIn in `src/data/site.json`
 - [x] More projects in `src/content/projects/<slug>/` — all 117 blog posts imported (see `docs/import/`)
 - [ ] Team portraits (replace the initials placeholders)
-- [ ] Final copy review: home, projects, studio pages
+- [ ] Final copy review: home, projects, studio pages — checklist in [phase-1-review.md](phase-1-review.md)
 
 About page team and services stay hard-coded in this phase; they move to the CMS in phase 2.
 
