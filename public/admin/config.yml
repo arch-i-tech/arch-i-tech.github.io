@@ -101,4 +101,6 @@ collections:
           - { name: phone, label: Phone, widget: string, required: false }
           - { name: location, label: Studio location, widget: string, required: false }
           - { name: facebook, label: Facebook URL, widget: string, required: false }
+          - { name: linkedin, label: LinkedIn URL, widget: string, required: false }
+          - { name: upwork, label: Upwork URL, widget: string, required: false }
           - { name: formEndpoint, label: Contact form endpoint (Formspree / Web3Forms URL), widget: string, required: false }

@@ -16,7 +16,7 @@ const team = [
   },
   {
     name: 'Dan Markov',
-    role: '3D Design & Visualization',
+    role: 'Design & Visualization',
     bio: 'Dan brings advanced 3D design, modeling and visualization expertise, producing photorealistic imagery that communicates design intent and elevates client presentations.',
   },
 ];
@@ -76,6 +76,23 @@ const initials = (name: string) => name.split(' ').map((n) => n[0]).join('');
         expertise, landscape strategy and advanced 3D visualization to support projects from concept
         to presentation.
       </p>
+      {(site.linkedin || site.upwork) && (
+        <div class="profiles">
+          <span class="eyebrow">Find us on</span>
+          {site.linkedin && (
+            <a href={site.linkedin} class="profile-btn" rel="noopener" target="_blank">
+              <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" /><path d="M8 10v7" /><path d="M8 7v.01" /><path d="M12 17v-7" /><path d="M12 13a3 3 0 0 1 6 0v4" /></svg>
+              LinkedIn<span class="visually-hidden"> (opens in a new tab)</span>
+            </a>
+          )}
+          {site.upwork && (
+            <a href={site.upwork} class="profile-btn" rel="noopener" target="_blank">
+              <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10" /><path d="M7 17 17 7" /></svg>
+              Hire us on Upwork<span class="visually-hidden"> (opens in a new tab)</span>
+            </a>
+          )}
+        </div>
+      )}
     </div>
   </section>
 
@@ -146,6 +163,15 @@ const initials = (name: string) => name.split(' ').map((n) => n[0]).join('');
   .intro-text { flex: 1.4 1 30rem; display: flex; flex-direction: column; gap: 1.25rem; font-size: 1.0625rem; line-height: 1.75; color: var(--ink-2); }
   .intro-text p { margin: 0; }
   .intro-text .lede { color: var(--ink); }
+  .profiles { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; padding-top: 0.5rem; }
+  .profiles .eyebrow { width: 100%; color: #6a6560; }
+  .profile-btn {
+    display: inline-flex; align-items: center; gap: 0.625rem;
+    min-height: 3rem; padding: 0 1.25rem;
+    border: 1px solid var(--ink); color: var(--ink);
+    font-size: 0.9375rem; font-weight: 600; line-height: 1;
+  }
+  .profile-btn:hover { border-color: var(--accent); color: var(--accent); }
 
   .team { padding-bottom: 6rem; }
   .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 3rem 2rem; }
