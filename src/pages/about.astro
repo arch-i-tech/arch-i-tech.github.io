@@ -1,23 +1,39 @@
 ---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import site from '../data/site.json';
+import danPortrait from '../assets/team-dan-markov.jpg';
 
-// TODO: move team + services into CMS-editable data once the CMS is wired up.
-const team = [
+// TODO (phase 2): move team + services into CMS-editable data.
+// Missing links are left out, not shown as placeholders. Upwork always comes before LinkedIn.
+interface Member {
+  name: string;
+  role: string;
+  bio: string;
+  photo?: ImageMetadata;
+  upwork?: string;
+  linkedin?: string;
+}
+const team: Member[] = [
   {
     name: 'Irina Rizova',
     role: 'Architecture',
     bio: 'Educated at Pratt Institute, New York, Irina leads architecture projects globally, specializing in residential, commercial and hospitality design.',
+    linkedin: 'https://www.linkedin.com/in/irina-rizova-leed-ap-97082714/',
   },
   {
     name: 'Borislav Stoynev',
     role: 'Site Planning & Master Planning',
     bio: 'Borislav specializes in site planning and master planning for resorts, F&B, mixed-use and industrial developments — orchestrating buildings, circulation and outdoor space.',
+    upwork: 'https://www.upwork.com/freelancers/borislavstoynev',
   },
   {
     name: 'Dan Markov',
-    role: 'Design & Visualization',
+    role: 'Design and Development',
     bio: 'Dan brings advanced 3D design, modeling and visualization expertise, producing photorealistic imagery that communicates design intent and elevates client presentations.',
+    photo: danPortrait,
+    linkedin: 'https://www.linkedin.com/in/danidan8/',
   },
 ];
 
@@ -62,7 +78,7 @@ const services = [
 
 const initials = (name: string) => name.split(' ').map((n) => n[0]).join('');
 ---
-<BaseLayout title="Studio" description="About Arch-I-Tech: team, services and contact.">
+<BaseLayout title="About" description="About Arch-I-Tech: our team and services.">
   <section class="container intro">
     <h1 class="display">The studio</h1>
     <div class="intro-text">
@@ -74,21 +90,22 @@ const initials = (name: string) => name.split(' ').map((n) => n[0]).join('');
         We transform ideas into functional, visually striking spaces across residential, commercial,
         hospitality, mixed-use and industrial projects worldwide. We integrate architectural
         expertise, landscape strategy and advanced 3D visualization to support projects from concept
-        to presentation.
+        to presentation — adapting to diverse markets, scales and design challenges while keeping a
+        consistently high standard.
       </p>
-      {(site.linkedin || site.upwork) && (
+      {(site.upwork || site.linkedin) && (
         <div class="profiles">
           <span class="eyebrow">Find us on</span>
+          {site.upwork && (
+            <a href={site.upwork} class="profile-btn" rel="noopener" target="_blank">
+              <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" /><path d="M6.5 9v2.5a2.25 2.25 0 0 0 4.5 0V9" /><path d="M13 18V9.25" /><circle cx="15.25" cy="11.5" r="2.25" /></svg>
+              Hire us on Upwork<span class="visually-hidden"> (opens in a new tab)</span>
+            </a>
+          )}
           {site.linkedin && (
             <a href={site.linkedin} class="profile-btn" rel="noopener" target="_blank">
               <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" /><path d="M8 10v7" /><path d="M8 7v.01" /><path d="M12 17v-7" /><path d="M12 13a3 3 0 0 1 6 0v4" /></svg>
               LinkedIn<span class="visually-hidden"> (opens in a new tab)</span>
-            </a>
-          )}
-          {site.upwork && (
-            <a href={site.upwork} class="profile-btn" rel="noopener" target="_blank">
-              <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10" /><path d="M7 17 17 7" /></svg>
-              Hire us on Upwork<span class="visually-hidden"> (opens in a new tab)</span>
             </a>
           )}
         </div>
@@ -101,10 +118,24 @@ const initials = (name: string) => name.split(' ').map((n) => n[0]).join('');
     <div class="team-grid">
       {team.map((m) => (
         <article>
-          <div class="portrait" role="img" aria-label={`Portrait of ${m.name}`}>{initials(m.name)}</div>
+          {m.photo ? (
+            <Image src={m.photo} alt={`Portrait of ${m.name}`} widths={[320, 480, 720]} sizes="(max-width: 700px) 100vw, 33vw" class="portrait" />
+          ) : (
+            <div class="portrait placeholder" role="img" aria-label={`Portrait of ${m.name} (photo coming soon)`}>{initials(m.name)}</div>
+          )}
           <h3>{m.name}</h3>
           <span class="eyebrow role">{m.role}</span>
           <p>{m.bio}</p>
+          {(m.upwork || m.linkedin) && (
+            <div class="member-links">
+              {m.upwork && (
+                <a href={m.upwork} rel="noopener" target="_blank" aria-label={`Upwork: ${m.name} (opens in a new tab)`}><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="16" height="16" rx="2" /><path d="M6.5 9v2.5a2.25 2.25 0 0 0 4.5 0V9" /><path d="M13 16V9.25" /><circle cx="15.25" cy="11.5" r="2.25" /></svg> Upwork</a>
+              )}
+              {m.linkedin && (
+                <a href={m.linkedin} rel="noopener" target="_blank" aria-label={`LinkedIn: ${m.name} (opens in a new tab)`}><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="16" height="16" rx="2" /><path d="M8 10v7" /><path d="M8 7v.01" /><path d="M12 17v-7" /><path d="M12 13a3 3 0 0 1 6 0v4" /></svg> LinkedIn</a>
+              )}
+            </div>
+          )}
         </article>
       ))}
     </div>
@@ -126,35 +157,6 @@ const initials = (name: string) => name.split(' ').map((n) => n[0]).join('');
       </div>
     </div>
   </section>
-
-  <section id="contact" class="container contact" aria-labelledby="contact-h">
-    <div class="contact-info">
-      <h2 id="contact-h">Let's talk about your project.</h2>
-      <dl>
-        {site.email && <div><dt>Email</dt><dd><a href={`mailto:${site.email}`}>{site.email}</a></dd></div>}
-        {site.phone && <div><dt>Phone</dt><dd>{site.phone}</dd></div>}
-        {site.location && <div><dt>Studio</dt><dd>{site.location}</dd></div>}
-      </dl>
-    </div>
-
-    <!-- Static sites can't receive form posts; set site.formEndpoint to a Formspree/Web3Forms URL. -->
-    <form class="contact-form" method="POST" action={site.formEndpoint || undefined}>
-      <label>Name <input type="text" name="name" autocomplete="name" required /></label>
-      <label>Email <input type="email" name="email" autocomplete="email" required /></label>
-      <label class="full">Project type
-        <select name="type">
-          <option>Master planning</option>
-          <option>Architecture</option>
-          <option>Landscape architecture</option>
-          <option>Interior design</option>
-          <option>3D visualization / animation</option>
-          <option>Other</option>
-        </select>
-      </label>
-      <label class="full">Tell us about the project <textarea name="message" rows="6" required></textarea></label>
-      <div class="full"><button type="submit" class="btn" disabled={!site.formEndpoint}>Send message</button></div>
-    </form>
-  </section>
 </BaseLayout>
 
 <style>
@@ -164,7 +166,7 @@ const initials = (name: string) => name.split(' ').map((n) => n[0]).join('');
   .intro-text p { margin: 0; }
   .intro-text .lede { color: var(--ink); }
   .profiles { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; padding-top: 0.5rem; }
-  .profiles .eyebrow { width: 100%; color: #6a6560; }
+  .profiles .eyebrow { width: 100%; color: var(--label); }
   .profile-btn {
     display: inline-flex; align-items: center; gap: 0.625rem;
     min-height: 3rem; padding: 0 1.25rem;
@@ -176,36 +178,27 @@ const initials = (name: string) => name.split(' ').map((n) => n[0]).join('');
   .team { padding-bottom: 6rem; }
   .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 3rem 2rem; }
   .team article { display: flex; flex-direction: column; gap: 1rem; }
-  .portrait { aspect-ratio: 4 / 5; background: var(--surface); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 3rem; font-weight: 300; color: #8f8a83; }
+  .portrait { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; background: var(--surface); }
+  .placeholder { display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 3rem; font-weight: 300; color: var(--placeholder-ink); }
+  .member-links { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .member-links a {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    min-height: 2.75rem; padding: 0 1rem;
+    border: 1px solid var(--outline); font-size: 0.875rem; font-weight: 600;
+  }
+  .member-links a:hover { border-color: var(--accent); }
   .team h3 { font-size: 1.375rem; font-weight: 500; }
   .role { color: var(--accent); }
-  .team p { margin: 0; font-size: 0.9375rem; color: #4a4744; }
+  .team p { margin: 0; font-size: 0.9375rem; color: var(--text-2); }
 
   .services { background: var(--bg-alt); padding-block: 6rem; }
   .services-inner { display: flex; flex-wrap: wrap; gap: 3rem 6rem; }
   .services-head { flex: 1 1 18rem; display: flex; flex-direction: column; gap: 1rem; }
   .services-head h2 { font-size: clamp(2rem, 3vw, 2.75rem); font-weight: 300; letter-spacing: -0.02em; }
-  .services-head p { margin: 0; color: #4a4744; }
+  .services-head p { margin: 0; color: var(--text-2); }
   .services-grid { flex: 2 1 32rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 2.5rem 3rem; }
   .service { display: flex; flex-direction: column; gap: 0.875rem; padding-top: 1.25rem; border-top: 1px solid var(--ink); }
   .service h3 { font-size: 1.25rem; font-weight: 500; }
-  .service ul { margin: 0; padding-left: 1.1rem; display: flex; flex-direction: column; gap: 0.375rem; font-size: 0.9375rem; line-height: 1.55; color: #4a4744; }
+  .service ul { margin: 0; padding-left: 1.1rem; display: flex; flex-direction: column; gap: 0.375rem; font-size: 0.9375rem; line-height: 1.55; color: var(--text-2); }
 
-  .contact { padding-block: 6rem 7rem; display: flex; flex-wrap: wrap; gap: 3rem 6rem; }
-  .contact-info { flex: 1 1 20rem; display: flex; flex-direction: column; gap: 1.5rem; }
-  .contact-info h2 { font-size: clamp(2rem, 3.6vw, 3.25rem); font-weight: 300; line-height: 1.1; letter-spacing: -0.02em; }
-  .contact-info dl { margin: 0; display: flex; flex-direction: column; gap: 1.25rem; }
-  .contact-info dt { font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase; color: #6a6560; }
-  .contact-info dd { margin: 0.25rem 0 0; font-weight: 500; }
-
-  .contact-form { flex: 1.3 1 26rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 1.5rem; }
-  .contact-form label { display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.8125rem; font-weight: 500; }
-  .contact-form .full { grid-column: 1 / -1; }
-  .contact-form input, .contact-form select, .contact-form textarea {
-    min-height: 3rem; padding: 0.75rem 1rem;
-    border: 1px solid var(--field-border); background: #fff; color: var(--ink);
-    font: 400 1rem/1.5 var(--font-body);
-  }
-  .contact-form textarea { resize: vertical; }
-  .contact-form button[disabled] { opacity: 0.5; cursor: not-allowed; }
 </style>

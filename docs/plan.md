@@ -18,23 +18,23 @@ Most of the pages, layout and styles already exist. This phase makes them build,
 
 ### Build and repo
 
-- [ ] `npm install`, `npm run build`, `npm run check`; fix anything that breaks
-- [ ] Commit `package-lock.json`
-- [ ] Commit the pending LinkedIn / Upwork / role-title changes
-- [ ] Remove the leftover `claude/design-review-b8ba2a` worktree and branch (if no longer needed)
+- [x] `npm install`, `npm run build`, `npm run check`; fix anything that breaks
+- [x] Commit `package-lock.json`
+- [x] Commit the pending LinkedIn / Upwork / role-title changes (redone from the design canvas)
+- [x] Remove the leftover `claude/design-review-b8ba2a` worktree and branch (branch was gone; the empty `.claude/worktrees/` folder is locked by another program — delete it by hand)
 
 ### Site basics
 
-- [ ] Favicon and app icons in `public/`
-- [ ] Sitemap (`@astrojs/sitemap`) and `robots.txt`
-- [ ] Keep the category list in one place (currently duplicated in `src/content.config.ts` and `public/admin/config.yml`)
-- [ ] Move remaining hard-coded colours into the tokens in `src/styles/global.css`
-- [ ] Check layout on phone, tablet and desktop; check keyboard navigation
+- [x] Favicon and app icons in `public/`
+- [x] Sitemap (`@astrojs/sitemap`) and `robots.txt`
+- [x] Keep the category list in one place — `src/data/categories.json` (CMS: Site settings → Categories)
+- [x] Move remaining hard-coded colours into the tokens in `src/styles/global.css`
+- [x] Check layout on phone, tablet and desktop; check keyboard navigation (skip link added; hero overflow on small screens fixed)
 
 ### Content
 
-- [ ] Contact details in `src/data/site.json` (email, phone, studio location, social links)
-- [ ] More projects in `src/content/projects/<slug>/` (cover, gallery, facts, description)
+- [x] ~~Contact details~~ Portfolio only: no email/phone/form; studio Upwork + LinkedIn in `src/data/site.json`
+- [x] More projects in `src/content/projects/<slug>/` — all 117 blog posts imported (see `docs/import/`)
 - [ ] Team portraits (replace the initials placeholders)
 - [ ] Final copy review: home, projects, studio pages
 

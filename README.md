@@ -7,28 +7,29 @@ Portfolio website for Arch-I-Tech Ltd, built with [Astro](https://astro.build), 
 ```
 src/
   content/projects/<slug>/index.md   one folder per project, images next to it
-  content.config.ts                  project fields (schema) + category list
-  data/site.json                     contact & company details (editable in CMS)
+  content.config.ts                  project fields (schema)
+  data/categories.json               project categories (single source; editable in CMS)
+  data/site.json                     company details + studio Upwork/LinkedIn (editable in CMS)
   layouts/BaseLayout.astro           <head>, SEO/OG tags, header + footer
   components/                        Header, Footer, ProjectCard
   pages/                             /, /projects/, /projects/<slug>/, /about/, 404
   styles/global.css                  design tokens and shared styles
 public/admin/                        CMS (index.html + config.yml)
+scripts/import-blogger.py            one-off import of the old Blogger portfolio (see docs/import/)
+scripts/prune-unused-images.mjs      runs after build; drops unused original images from dist/
 .github/workflows/deploy.yml         build + deploy to GitHub Pages on push to main
 ```
 
 ## Local development
 
-Requires Node.js 20.3+ (22 LTS recommended).
+Requires Node.js 20.3+ (22 LTS or newer recommended).
 
 ```bash
 npm install
 npm run dev        # http://localhost:4321
-npm run build      # outputs to dist/
+npm run build      # outputs to dist/ (~2 min: resizes ~640 images)
 npm run preview    # serve the built site
 ```
-
-Commit `package-lock.json` after the first `npm install`.
 
 ## Deployment
 

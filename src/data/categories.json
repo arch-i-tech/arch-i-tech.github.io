@@ -1,0 +1,9 @@
+{
+  "categories": [
+    { "name": "Master Planning", "description": "Resorts, hospitality complexes, residential communities and urban districts." },
+    { "name": "Architecture", "description": "Homes and villas, hotels, mixed-use, retail, civic and industrial buildings." },
+    { "name": "Landscape Architecture", "description": "Parks, gardens, estates, pools and recreational landscapes." },
+    { "name": "Interior Design", "description": "Residences, hotels, restaurants, offices and retail interiors." },
+    { "name": "3D Animation", "description": "Photoreal stills, animation, projection mapping and immersive media." }
+  ]
+}

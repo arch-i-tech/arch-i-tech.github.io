@@ -3,9 +3,9 @@ title: Ocean Lake Resort
 summary: A beachfront lagoon community in Loíza, Puerto Rico — one block from the Atlantic, organized around a single lagoon.
 location: Loíza, Puerto Rico
 categories:
-  - Hospitality
   - Master Planning
-  - Landscape
+  - Architecture
+  - Landscape Architecture
 services: Master plan, architecture, landscape
 cover: ./cover.jpg
 coverAlt: Condo-hotel terraces overlooking the lagoon and the Atlantic
@@ -27,8 +27,9 @@ gallery:
   - image: ./townhome-terrace.jpg
     alt: Townhome terrace with pool and lagoon view
     caption: Townhome terrace — pool and lagoon view.
+source: https://arch-i-tech.blogspot.com/2026/07/ocean-lake-resort-beachfront-lagoon.html
 featured: true
-order: 1
+order: 3
 ---
 
 ## Lagoon as spine

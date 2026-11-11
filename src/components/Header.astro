@@ -1,22 +1,25 @@
 ---
+import { Image } from 'astro:assets';
+import logo from '../assets/logo.png';
+
 const path = Astro.url.pathname;
 const links = [
   { href: '/projects/', label: 'Projects' },
   { href: '/about/#services', label: 'Services' },
-  { href: '/about/', label: 'Studio' },
+  { href: '/about/', label: 'About', accent: true },
 ];
-const isCurrent = (href: string) => {
-  const base = href.split('#')[0];
-  return base !== '/' && !href.includes('#') && path.startsWith(base);
-};
+const isCurrent = (href: string) => !href.includes('#') && path.startsWith(href);
 ---
 <header class="site-header container">
-  <a href="/" class="logo">ARCH-I-TECH <span>LTD</span></a>
+  <a href="/" class="logo">
+    <Image src={logo} alt="Arch-I-Tech Ltd — home" width={624} densities={[1, 2]} loading="eager" />
+  </a>
   <nav aria-label="Main">
     {links.map((l) => (
-      <a href={l.href} aria-current={isCurrent(l.href) ? 'page' : undefined}>{l.label}</a>
+      <a href={l.href} class:list={{ accent: l.accent }} aria-current={isCurrent(l.href) ? 'page' : undefined}>
+        {l.label}
+      </a>
     ))}
-    <a href="/about/#contact" class="contact">Contact</a>
   </nav>
 </header>
 
@@ -27,32 +30,23 @@ const isCurrent = (href: string) => {
     align-items: center;
     justify-content: space-between;
     gap: 1rem 2rem;
-    padding-block: 1.5rem;
+    padding-block: 1.75rem;
   }
-  .logo {
-    display: flex;
-    align-items: baseline;
-    gap: 0.5rem;
-    font-family: var(--font-display);
-    font-size: 1.25rem;
-    font-weight: 600;
-    letter-spacing: 0.18em;
-  }
-  .logo span {
-    font-size: 0.7rem;
-    font-weight: 400;
-    letter-spacing: 0.12em;
-    color: var(--muted);
-  }
+  .logo { display: flex; align-items: center; padding: 0.25rem 0; }
+  .logo img { width: 19.5rem; max-width: 100%; height: auto; }
   nav {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.25rem 2rem;
-    font-size: 0.875rem;
+    gap: 0.25rem 2.5rem;
+    font-size: 0.9375rem;
     font-weight: 500;
     letter-spacing: 0.04em;
   }
   nav a { padding: 0.75rem 0; }
   nav a[aria-current='page'] { box-shadow: inset 0 -2px 0 var(--accent); }
-  .contact { color: var(--accent); }
+  .accent { color: var(--accent); }
+  @media (max-width: 640px) {
+    .logo img { width: 15rem; }
+    nav { gap: 0.25rem 1.75rem; }
+  }
 </style>

@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "postbuild": "node scripts/prune-unused-images.mjs",
     "preview": "astro preview",
     "check": "astro check"
   },

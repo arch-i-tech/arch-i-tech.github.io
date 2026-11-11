@@ -1,5 +1,6 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
+import sitemap from '@astrojs/sitemap';
 
 // https://docs.astro.build/en/reference/configuration-reference/
 export default defineConfig({
@@ -10,4 +11,6 @@ export default defineConfig({
   build: {
     format: 'directory',
   },
+  // Update robots.txt's Sitemap line too when `site` changes.
+  integrations: [sitemap({ filter: (page) => !page.includes('/admin/') })],
 });

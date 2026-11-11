@@ -3,17 +3,12 @@ import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import { getFeaturedProjects } from '../lib/projects';
+import { CATEGORY_LIST } from '../content.config';
 
 const featured = await getFeaturedProjects(6);
 const hero = featured[0];
 
-const disciplines = [
-  { title: 'Master Planning', text: 'Resorts, hospitality complexes, residential communities and urban districts.' },
-  { title: 'Architecture', text: 'Homes and villas, hotels, mixed-use, retail, civic and industrial buildings.' },
-  { title: 'Landscape Architecture', text: 'Parks, gardens, estates, pools and recreational landscapes.' },
-  { title: 'Interior Design', text: 'Residences, hotels, restaurants, offices and retail interiors.' },
-  { title: '3D Visualization & VFX', text: 'Photoreal stills, animation, projection mapping and immersive media.' },
-];
+const disciplines = CATEGORY_LIST.map((c) => ({ title: c.name, text: c.description }));
 ---
 <BaseLayout>
   {hero && (
@@ -31,7 +26,7 @@ const disciplines = [
           <h1>Architecture, landscape &amp; master planning — from first sketch to photoreal vision.</h1>
           <a href={`/projects/${hero.id}/`} class="hero-link">
             <span class="eyebrow">Featured</span>
-            <span>{hero.data.title}, {hero.data.location} →</span>
+            <span>{hero.data.title} →</span>
           </a>
         </div>
       </div>
@@ -47,7 +42,8 @@ const disciplines = [
     <div class="intro-side">
       <p>
         Our team combines decades of international experience to deliver design-driven solutions,
-        from early concept studies to detailed design and photorealistic visualization.
+        from early concept studies to detailed design and photorealistic visualization. We create
+        environments that perform, inspire, and leave a lasting impression.
       </p>
       <a href="/about/" class="link-arrow">About the studio →</a>
     </div>
@@ -78,28 +74,25 @@ const disciplines = [
     </div>
   </section>
 
-  <section class="container cta">
-    <h2>Have a project in mind? Let's talk.</h2>
-    <a href="/about/#contact" class="btn">Start a conversation</a>
-  </section>
 </BaseLayout>
 
 <style>
-  .hero-media { position: relative; overflow: hidden; aspect-ratio: 16 / 8.4; min-height: 26rem; background: #2a2826; }
+  /* Explicit width: with aspect-ratio + min-height, an auto width would grow past small screens. */
+  .hero-media { position: relative; overflow: hidden; width: 100%; aspect-ratio: 16 / 8.4; min-height: 26rem; background: var(--hero-bg); }
   .hero-media :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   .hero-overlay {
     position: absolute; inset: auto 0 0 0;
     padding: 6rem 2.5rem 2.25rem;
-    background: linear-gradient(to top, rgba(10, 10, 10, 0.72), rgba(10, 10, 10, 0));
+    background: linear-gradient(to top, var(--hero-shade), transparent);
     display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 1.5rem;
   }
   .hero-overlay h1 {
-    max-width: 46rem; color: #fff; font-weight: 300;
+    max-width: 46rem; color: var(--hero-ink); font-weight: 300;
     font-size: clamp(2rem, 4.2vw, 3.75rem); line-height: 1.06; letter-spacing: -0.02em;
   }
-  .hero-link { display: flex; flex-direction: column; gap: 0.25rem; padding: 0.75rem 0; color: #fff; font-size: 0.8125rem; font-weight: 500; text-align: right; }
-  .hero-link:hover { color: #fff; text-decoration: underline; }
-  .hero-link .eyebrow { color: #e6e2dc; font-weight: 400; }
+  .hero-link { display: flex; flex-direction: column; gap: 0.25rem; padding: 0.75rem 0; color: var(--hero-ink); font-size: 0.8125rem; font-weight: 500; text-align: right; }
+  .hero-link:hover { color: var(--hero-ink); text-decoration: underline; }
+  .hero-link .eyebrow { color: var(--hero-ink-muted); font-weight: 400; }
   @media (max-width: 640px) {
     .hero-overlay { padding: 4rem 1.25rem 1.25rem; }
     .hero-link { text-align: left; }
@@ -108,7 +101,7 @@ const disciplines = [
   .intro { padding-block: 7rem 5rem; display: flex; flex-wrap: wrap; gap: 3rem 6rem; }
   .intro .lede { flex: 1 1 26rem; margin: 0; }
   .intro-side { flex: 1 1 22rem; display: flex; flex-direction: column; gap: 1.5rem; padding-top: 0.5rem; }
-  .intro-side p { margin: 0; color: #4a4744; line-height: 1.7; }
+  .intro-side p { margin: 0; color: var(--text-2); line-height: 1.7; }
   .intro-side .link-arrow { align-self: flex-start; border-bottom: 1px solid var(--ink); }
 
   .work { padding-bottom: 7rem; }
@@ -119,8 +112,6 @@ const disciplines = [
   .disc { display: flex; flex-direction: column; gap: 0.75rem; padding-top: 1.25rem; border-top: 1px solid var(--ink); }
   .disc .num { font-size: 0.8125rem; font-weight: 600; color: var(--accent); }
   .disc h3 { font-size: 1.25rem; font-weight: 500; }
-  .disc p { margin: 0; font-size: 0.9375rem; color: #4a4744; }
+  .disc p { margin: 0; font-size: 0.9375rem; color: var(--text-2); }
 
-  .cta { padding-block: 7rem; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 2rem; }
-  .cta h2 { max-width: 40rem; font-weight: 300; font-size: clamp(2rem, 3.6vw, 3.25rem); line-height: 1.1; letter-spacing: -0.02em; }
 </style>

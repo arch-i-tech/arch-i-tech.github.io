@@ -29,33 +29,51 @@ const filters = ['All', ...used];
     <div class="grid-projects" data-grid>
       {projects.map((p, i) => <ProjectCard project={p} eager={i < 3} />)}
     </div>
+    <div class="more" data-more-wrap hidden>
+      <button type="button" class="btn btn--ghost" data-more>Load more projects</button>
+    </div>
   </section>
 </BaseLayout>
 
 <script>
   // Progressive enhancement: without JS every project stays visible.
+  const PAGE = 24;
   const buttons = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
-  const cards = document.querySelectorAll<HTMLElement>('[data-grid] [data-categories]');
+  const cards = Array.from(document.querySelectorAll<HTMLElement>('[data-grid] [data-categories]'));
   const count = document.querySelector<HTMLElement>('[data-count]');
+  const moreWrap = document.querySelector<HTMLElement>('[data-more-wrap]');
+  const more = document.querySelector<HTMLButtonElement>('[data-more]');
+  let filter = 'All';
+  let limit = PAGE;
 
-  function apply(filter: string) {
-    let shown = 0;
-    cards.forEach((card) => {
-      const cats = (card.dataset.categories ?? '').split('|');
-      const visible = filter === 'All' || cats.includes(filter);
-      card.hidden = !visible;
-      if (visible) shown++;
-    });
+  function apply() {
+    const matching = cards.filter((card) => filter === 'All' || (card.dataset.categories ?? '').split('|').includes(filter));
+    cards.forEach((card) => (card.hidden = true));
+    matching.slice(0, limit).forEach((card) => (card.hidden = false));
     buttons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.filter === filter)));
-    if (count) count.textContent = `${shown} ${shown === 1 ? 'project' : 'projects'}`;
+    if (count) count.textContent = `${matching.length} ${matching.length === 1 ? 'project' : 'projects'}`;
+    if (moreWrap) moreWrap.hidden = matching.length <= limit;
   }
 
-  buttons.forEach((b) => b.addEventListener('click', () => apply(b.dataset.filter ?? 'All')));
+  buttons.forEach((b) =>
+    b.addEventListener('click', () => {
+      filter = b.dataset.filter ?? 'All';
+      limit = PAGE;
+      apply();
+    }),
+  );
+  more?.addEventListener('click', () => {
+    const firstNew = cards.filter((c) => c.hidden === true && (filter === 'All' || (c.dataset.categories ?? '').split('|').includes(filter)))[0];
+    limit += PAGE;
+    apply();
+    firstNew?.focus();
+  });
+  apply();
 </script>
 
 <style>
   .head { padding-block: 4.5rem 2.5rem; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 1.5rem 4rem; }
-  .head p { margin: 0; max-width: 30rem; color: #4a4744; line-height: 1.65; }
+  .head p { margin: 0; max-width: 30rem; color: var(--text-2); line-height: 1.65; }
   .list { padding-bottom: 6rem; }
   .filters {
     display: flex; flex-wrap: wrap; gap: 0.5rem;
@@ -64,10 +82,11 @@ const filters = ['All', ...used];
   }
   .filters button {
     min-height: 2.75rem; padding: 0 1.25rem;
-    border: 1px solid #c9c3ba; background: transparent; color: var(--ink);
+    border: 1px solid var(--outline); background: transparent; color: var(--ink);
     font: 500 0.875rem var(--font-body); cursor: pointer;
   }
   .filters button:hover { border-color: var(--ink); }
-  .filters button[aria-pressed='true'] { background: var(--ink); border-color: var(--ink); color: #fff; }
+  .filters button[aria-pressed='true'] { background: var(--ink); border-color: var(--ink); color: var(--bg); }
+  .more { display: flex; justify-content: center; padding-top: 4rem; }
   .count { margin-left: auto; align-self: center; font-size: 0.875rem; color: var(--muted); }
 </style>
