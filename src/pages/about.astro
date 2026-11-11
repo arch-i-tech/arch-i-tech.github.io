@@ -186,7 +186,8 @@ const initials = (name: string) => name.split(' ').map((n) => n[0]).join('');
   .team article { display: flex; flex-direction: column; gap: 1rem; }
   .portrait { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; background: var(--surface); }
   .placeholder { display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 3rem; font-weight: 300; color: var(--placeholder-ink); }
-  .member-links { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  /* Pinned to the bottom of each card so the buttons line up across the row, whatever the bio length. */
+  .member-links { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: auto; padding-top: 0.25rem; }
   .member-links a {
     display: inline-flex; align-items: center; gap: 0.5rem;
     min-height: 2.75rem; padding: 0 1rem;
