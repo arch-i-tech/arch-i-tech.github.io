@@ -28,11 +28,19 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: npm
 
-      # Uses `npm ci` once package-lock.json is committed; falls back to `npm install` until then.
       - name: Install dependencies
-        run: |
-          if [ -f package-lock.json ]; then npm ci; else npm install; fi
+        run: npm ci
+
+      # Astro keeps resized images in node_modules/.astro; `npm ci` wipes node_modules,
+      # so restore the cache after it. Without this every deploy re-encodes ~2,500 images.
+      - name: Restore image cache
+        uses: actions/cache@v4
+        with:
+          path: node_modules/.astro
+          key: astro-images-${{ github.sha }}
+          restore-keys: astro-images-
 
       - name: Build
         run: npm run build

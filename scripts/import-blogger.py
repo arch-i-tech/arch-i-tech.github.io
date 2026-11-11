@@ -348,7 +348,7 @@ def summary_from(p: dict, title: str) -> str:
         return p["subtitle"]
     for line in p["body"].splitlines():
         t = clean_inline(line)
-        if len(t) < 25 or LABEL_LINE.match(t):
+        if len(t) < 25 or LABEL_LINE.match(t) or re.search(r"https?://", t):
             continue
         if len(re.findall(r"[\u0400-\u04FF]", t)) > len(t) / 4:
             continue

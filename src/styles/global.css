@@ -126,7 +126,11 @@ h1, h2, h3 { font-family: var(--font-display); margin: 0; }
 .prose { max-width: 46rem; font-size: 1.0625rem; line-height: 1.75; color: var(--ink-2); }
 .prose h2 { font-size: 1.75rem; font-weight: 400; letter-spacing: -0.01em; color: var(--ink); margin: 3rem 0 1rem; }
 .prose h2:first-child { margin-top: 0; }
+.prose h3 { font-size: 1.25rem; font-weight: 500; color: var(--ink); margin: 2rem 0 0.75rem; }
 .prose p { margin: 0 0 1.25rem; }
+.prose ul, .prose ol { margin: 0 0 1.25rem; padding-left: 1.25rem; }
+.prose li { margin-bottom: 0.375rem; }
+.prose a { color: var(--accent); text-decoration: underline; text-underline-offset: 0.15em; overflow-wrap: anywhere; }
 
 .visually-hidden {
   position: absolute !important;

@@ -35,7 +35,7 @@ const facts = [...(d.location ? [{ label: 'Location', value: d.location }] : [])
     <a href="/projects/" class="back">← All projects</a>
     <span class="eyebrow cats">{d.categories.join(' · ')}</span>
     <h1 class="display">{d.title}</h1>
-    <p class="lede">{d.summary}</p>
+    {d.summary.trim().toLowerCase() !== d.title.trim().toLowerCase() && <p class="lede">{d.summary}</p>}
   </section>
 
   <section class="container">

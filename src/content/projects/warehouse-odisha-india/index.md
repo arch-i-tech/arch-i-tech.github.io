@@ -1,6 +1,6 @@
 ---
 title: "Warehouse, Odisha, India"
-summary: "link: <http://www.odisri.com/media"
+summary: "Planning and architecture for new industrial development in Odisha, India"
 location: "Odisha, India"
 categories:
   - Architecture
