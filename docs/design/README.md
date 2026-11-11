@@ -23,7 +23,8 @@ Live canvas (editable, the source of truth): https://claude.ai/artifact/12xKffHT
 
 - **Purpose:** portfolio only. No contact form, email or phone; visitors reach the studio through Upwork
   (studio agency page and personal profiles), with LinkedIn as secondary. Upwork buttons always come before LinkedIn.
-- **Menu:** Projects · About. "About" carries the accent color. (A separate "Services" item was dropped on 2026-11-11: it only jumped to the Services section of the About page.)
+- **Menu:** Projects · About. Both behave the same: ink text, accent on hover, accent underline on the current page. (Until 2026-11-11 "About" was always accent-coloured, and a separate "Services" item jumped to the Services section of the About page; both dropped.)
+- **Upwork / LinkedIn icons:** the official marks from [Simple Icons](https://simpleicons.org) (CC0), stored once as files and referenced everywhere — on the site `src/assets/icons/upwork.svg` and `linkedin.svg` (they take the text colour), in the canvas the two SVG assets below.
 - **Header:** option A — the logo at 64px tall (`width: 19.5rem; max-width: 100%`), menu on the right.
 - **Footer (all pages):** dark band with the ARCH-I-TECH wordmark and copyright only.
 - **Missing links are left out**, not shown as placeholders.
@@ -62,6 +63,8 @@ Live canvas (editable, the source of truth): https://claude.ai/artifact/12xKffHT
 | `fcb0e2d3….jpg` | Museum, Sports & Amusement Park, Kelowna |
 | `d5caed61….jpg` | Residence on a Slope, California |
 | `9ceffc20….jpg` | Glamping Eco Village, Durmitor |
+| `1df1e71c….svg` | Upwork icon (Simple Icons, CC0) |
+| `279f687c….svg` | LinkedIn icon (Simple Icons, CC0) |
 
 The logo files were made from `arch-i-tech logo/Arch-I-Tech LOGO_RED.png` in the parent project folder
 (URL line removed, white made transparent).
