@@ -72,7 +72,5 @@ The logo files were made from `arch-i-tech logo/Arch-I-Tech LOGO_RED.png` in the
 ## Still open
 
 - Photos for Irina Rizova and Borislav Stoynev (cards show initials for now).
-- Upwork profile links for Irina and Dan: two IDs were given (`~0165804fef172522a1`, `~01942d02deedf3b3de`)
-  but not yet matched to a person; both buttons point to upwork.com for now.
 - The project page is a template filled with Ocean Lake Resort; other projects need their own content.
 - More portfolio images are available in `03_PORTFOLIO_WEB/BEST_MISC` and `03_PORTFOLIO_WEB/2019` in the parent folder.
