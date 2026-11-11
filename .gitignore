@@ -31,3 +31,6 @@ desktop.ini
 # Local scratch
 *.local
 tmp/
+
+# Local Claude Code settings (preview launcher, worktrees)
+.claude/
