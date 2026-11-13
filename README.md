@@ -18,6 +18,7 @@ public/admin/                        CMS (index.html + config.yml)
 scripts/import-blogger.py            one-off import of the old Blogger portfolio (see docs/import/)
 scripts/prune-unused-images.mjs      runs after build; drops unused original images from dist/
 .github/workflows/deploy.yml         build + deploy to GitHub Pages on push to main
+wrangler.jsonc                       Cloudflare config for the temporary develop preview
 ```
 
 ## Local development
@@ -38,6 +39,14 @@ npm run preview    # serve the built site
 3. Custom domain: add it in Settings → Pages, then point DNS (GoDaddy) at GitHub Pages
    (A records 185.199.108–111.153 for `@`, CNAME `www` → `arch-i-tech.github.io`).
    Update `site` in `astro.config.mjs` and `site_url` in `public/admin/config.yml`.
+
+### Develop preview (temporary)
+
+`develop` is deployed to Cloudflare Workers at
+https://arch-i-tech-github-io.danmarkov81.workers.dev on every push, so changes can be
+checked before they go to `main`. Cloudflare build settings: build command `npm run build`,
+deploy command `npx wrangler deploy` (config in `wrangler.jsonc`). Delete the Cloudflare
+project and `wrangler.jsonc` once this is no longer needed.
 
 ## Adding a project
 
