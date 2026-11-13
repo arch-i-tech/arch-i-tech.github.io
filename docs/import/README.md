@@ -5,7 +5,7 @@ Everything pulled into the site from outside the repo is logged here for review.
 | File | What |
 |---|---|
 | [blogger-import-log.md](blogger-import-log.md) | Every post imported from https://arch-i-tech.blogspot.com/ — slug, source post, categories and where they came from, image/video counts, and ⚠ items to check |
-| [blogger-import.json](blogger-import.json) | The same, machine-readable, including every image URL |
+| `blogger-import.json` | The same, machine-readable, including every image URL. Not committed (git-ignored); `scripts/import-blogger.py` regenerates it |
 | [local-files-log.md](local-files-log.md) | Files used from the local project folder `D:\Projects\Arch-I-Tech_Web_Site_09.01.12` |
 
 ## How the blog import works

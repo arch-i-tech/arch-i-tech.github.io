@@ -5,6 +5,9 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
+  # Pull requests into main run the type check and build only; the deploy job is skipped.
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -42,6 +45,9 @@ jobs:
           key: astro-images-${{ github.sha }}
           restore-keys: astro-images-
 
+      - name: Type check
+        run: npm run check
+
       - name: Build
         run: npm run build
 
@@ -52,6 +58,7 @@ jobs:
 
   deploy:
     needs: build
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     environment:
       name: github-pages
